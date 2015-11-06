@@ -1,0 +1,56 @@
+diff --git a/app/assets/templates/header_tpl.jst.hbs b/app/assets/templates/header_tpl.jst.hbs
+index 40493d0..4292b9a 100644
+--- a/app/assets/templates/header_tpl.jst.hbs
++++ b/app/assets/templates/header_tpl.jst.hbs
+@@ -1,7 +1,8 @@
+ <div class="container" style="position:relative;">
+ 
+   <a href="/stream" data-stream-title="{{t "my_stream"}}">
+-    <div alt="logo" class="diaspora_header_logo logos-header-logo">
++    <div class="diaspora_header_logo" id="diacontents_logo">
++      <img src="/diacontents/current/header-logo.png" alt="logo" />
+     </div>
+   </a>
+ 
+diff --git a/app/views/home/default.haml b/app/views/home/default.haml
+index c08fa9f..11d2b0d 100644
+--- a/app/views/home/default.haml
++++ b/app/views/home/default.haml
+@@ -1,6 +1,9 @@
+ - content_for(:head) do
+   = stylesheet_link_tag :home, media: "all"
+ 
++  = stylesheet_link_tag '/diacontents/current/overwrites.css', {id: 'diacontents_css', media: 'all'}
++  = javascript_include_tag '/diacontents/current/overwrites.js', {id: 'diacontents_js'}
++
+ #page.container
+   %header#header
+     %a#login-link.btn{href: "login"} Log In
+diff --git a/app/views/layouts/_header.html.haml b/app/views/layouts/_header.html.haml
+index 654dece..ed89c5b 100644
+--- a/app/views/layouts/_header.html.haml
++++ b/app/views/layouts/_header.html.haml
+@@ -5,7 +5,9 @@
+ %header
+   - unless current_user
+     .container{style: "position:relative;"}
+-      = link_to content_tag(:div, nil, class: 'diaspora_header_logo logos-header-logo'), root_path
++      = link_to root_path do
++        #diacontents_logo.diaspora_header_logo
++          = image_tag "/diacontents/current/header-logo.png"
+ 
+       %ul#landing_nav
+         - if AppConfig.settings.enable_registrations? && !current_page?(controller: '/registrations', action: :new)
+diff --git a/app/views/layouts/application.html.haml b/app/views/layouts/application.html.haml
+index 12b09b5..417cd06 100644
+--- a/app/views/layouts/application.html.haml
++++ b/app/views/layouts/application.html.haml
+@@ -44,6 +44,8 @@
+     = yield(:head)
+     = csrf_meta_tag
+ 
++    = stylesheet_link_tag '/diacontents/current/overwrites.css', {id: 'diacontents_css', media: 'all'}
++    = javascript_include_tag '/diacontents/current/overwrites.js', {id: 'diacontents_js'}
+ 
+     = include_gon(:camel_case => true)
+ 

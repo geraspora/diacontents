@@ -1,0 +1,8 @@
+{
+  "name": "diacontents",
+  "version": "1.0.0",
+  "scripts": {
+    "apply": "node ./utils/apply.js",
+    "compress": "node ./utils/compress.js"
+  }
+}

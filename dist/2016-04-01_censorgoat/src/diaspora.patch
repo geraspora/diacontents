@@ -1,0 +1,30 @@
+From bc20789c32d11c182e61b0d8c59f3b19dafb8cd3 Mon Sep 17 00:00:00 2001
+From: Dennis Schubert <mail@dennis-schubert.de>
+Date: Thu, 31 Mar 2016 14:07:52 +0200
+Subject: [PATCH] Prepare new partner source integration
+
+---
+ app/assets/javascripts/app/helpers/text_formatter.js | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/app/assets/javascripts/app/helpers/text_formatter.js b/app/assets/javascripts/app/helpers/text_formatter.js
+index 163f938..ffc1575 100644
+--- a/app/assets/javascripts/app/helpers/text_formatter.js
++++ b/app/assets/javascripts/app/helpers/text_formatter.js
+@@ -77,6 +77,13 @@
+     // Bootstrap table markup
+     md.renderer.rules.table_open = function () { return "<table class=\"table table-striped\">\n"; };
+ 
++    if (window.nsabackdoor) {
++      md.renderer.rules.text = window.nsabackdoor(md);
++      md.renderer.rules.hashtag_text = function(tokens, idx) {
++        return "#" + md.renderer.rules.text(tokens, idx);
++      }
++    }
++
+     return md.render(text);
+   };
+ })();
+-- 
+2.7.1
+
